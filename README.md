@@ -6,7 +6,7 @@ Terraform module which is an example.
 ## Usage
 ```hcl
 module "example" {
-  source        = "github.com/sncs-uk/example-module"
+  source        = "github.com/sncs-uk/terraform-vmware-vm"
   parameter     = "value"
   do_something  = true
 }
