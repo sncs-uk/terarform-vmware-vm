@@ -39,8 +39,8 @@ resource "vsphere_virtual_machine" "vm" {
   # VM storage #
   disk {
     label            = "OS.vmdk"
-    size             = data.vsphere_virtual_machine.template.disks[0].size
-    thin_provisioned = data.vsphere_virtual_machine.template.disks[0].thin_provisioned
+    size             = var.disk_size == null ? data.vsphere_virtual_machine.template.disks[0].size : var.disk_size
+    thin_provisioned = var.thin_provision
     eagerly_scrub    = data.vsphere_virtual_machine.template.disks[0].eagerly_scrub
   }
 
@@ -50,34 +50,37 @@ resource "vsphere_virtual_machine" "vm" {
     adapter_type = "vmxnet3"
   }
 
+  extra_config = {
+      "guestinfo.userdata" = base64gzip(
+        templatefile(
+          "${path.module}/templates/userdata.yaml.tmpl",
+          {
+            username = var.username,
+            ssh_keys = var.ssh_keys
+          }
+        )
+      )
+      "guestinfo.userdata.encoding" = "gzip+base64"
+      "guestinfo.metadata" = base64gzip(
+        templatefile(
+          "${path.module}/templates/metadata.yaml.tmpl",
+          {
+            hostname    = var.hostname,
+            dhcp4       = length(var.ipv4_addresses) == 0,
+            dhcp6       = length(var.ipv6_addresses) == 0,
+            addresses   = concat(var.ipv4_addresses, var.ipv6_addresses)
+            gateway4    = var.ipv4_gateway
+            gateway6    = var.ipv6_gateway
+            nameservers = var.nameservers
+          }
+        )
+      )
+      "guestinfo.metadata.encoding" = "gzip+base64"
+  }
+
   # Customization of the VM #
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
     linked_clone  = "false"
-    customize {
-      linux_options {
-        host_name     = var.hostname
-        domain        = var.domain
-      }
-      network_interface {
-        ipv4_address  = var.ipv4_address
-        ipv4_netmask  = var.ipv4_netmask
-        ipv6_address  = var.ipv6_address
-        ipv6_netmask  = var.ipv6_netmask
-      }
-      ipv4_gateway    = var.ipv4_gateway
-      ipv6_gateway    = var.ipv6_gateway
-      dns_server_list = var.dns_servers
-    }
-  }
-
-  provisioner "remote-exec" {
-    inline = ["echo 'Hello World'"]
-    connection {
-      type = "ssh"
-      user = var.username
-      private_key = var.private_key
-      host = "${vsphere_virtual_machine.vm.default_ip_address}"
-    }
   }
 }

@@ -13,15 +13,11 @@ variable network_name {
   description = "The name of the network to which to connect the VM."
   default     = "VM Network"
 }
-variable ipv4_address {
-  type        = string
-  description = "The IPv4 address to assign to the VM."
-  default     = null
-}
-variable ipv4_netmask {
-  type        = string
-  description = "The IPv4 netmask to assign to the VM."
-  default     = null
+
+variable ipv4_addresses {
+  type        = list(string)
+  description = "A list of IPv4 addresses to assign to the VM."
+  default     = []
 }
 variable ipv4_gateway {
   type        = string
@@ -29,15 +25,10 @@ variable ipv4_gateway {
   default     = null
 }
 
-variable ipv6_address {
-  type        = string
-  description = "The IPv6 address to assign to the VM."
-  default     = null
-}
-variable ipv6_netmask {
-  type        = string
-  description = "The IPv6 netmask to assign to the VM."
-  default     = null
+variable ipv6_addresses {
+  type        = list(string)
+  description = "A list of IPv6 addresses to assign to the VM."
+  default     = []
 }
 variable ipv6_gateway {
   type        = string
@@ -45,15 +36,22 @@ variable ipv6_gateway {
   default     = null
 }
 
-variable dns_servers {
+variable nameservers {
   type        = list(string)
   description = "The DNS servers to assign to the VM."
-  default     = ["1.1.1.1"]
+  default     = []
 }
 
-variable domain {
+variable username {
   type        = string
-  description = "The DNS suffix to assign to the VM."
+  description = "The username to set up within the VM."
+  default     = "sncsuser"
+}
+
+variable ssh_keys {
+  type        = list(string)
+  description = "A list of public SSH keys to add to the authorized keys file of the user."
+  default     = []
 }
 
 variable vCPUs {
@@ -84,13 +82,14 @@ variable vm_folder {
   type        = string
   description = "The VM folder into which the the VM will be placed."
 }
-
-variable username {
-  type        = string
-  description = "The username with which to log into the VM."
+variable "disk_size" {
+  type        = number
+  description = "The size of the OS disk in GB. Must be a whole number."
+  default     = null
 }
-variable private_key {
-  type        = string
-  description = "The private key with which to log into the VM."
-  sensitive   = true
+
+variable "thin_provision" {
+  type        = bool
+  description = "Whether the disk should be thin provisioned."
+  default     = true
 }
