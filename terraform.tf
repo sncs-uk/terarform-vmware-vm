@@ -44,6 +44,17 @@ resource "vsphere_virtual_machine" "vm" {
     eagerly_scrub    = data.vsphere_virtual_machine.template.disks[0].eagerly_scrub
   }
 
+  dynamic disk {
+    for_each = var.additional_disks
+    content {
+      label             = disk.value["label"]
+      size              = disk.value["size"]
+      thin_provisioned  = disk.value["thin_provisioned"]
+      eagerly_scrub     = disk.value["eagerly_scrub"]
+      unit_number       = disk.key + 1
+    }
+  }
+
   # VM networking #
   network_interface {
     network_id   = data.vsphere_network.network.id

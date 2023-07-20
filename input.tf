@@ -93,3 +93,14 @@ variable "thin_provision" {
   description = "Whether the disk should be thin provisioned."
   default     = true
 }
+
+variable additional_disks {
+  type        = list(object({
+    label             = string
+    size              = number
+    thin_provisioned  = optional(bool, true)
+    eagerly_scrub     = optional(bool, false)
+  }))
+  description = "List of additional disks to add to the VM."
+  default     = []
+}

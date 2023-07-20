@@ -25,6 +25,14 @@ module "example" {
   vm_folder         = "My folder"
   disk_size         = 10
   thin_provision    = true
+  additional_disks  = [
+    {
+      label            = "disk-1"
+      size             = 10
+      thin_provisioned = true
+      eagerly_scrub    = false
+    }
+  ]
 }
 ```
 
