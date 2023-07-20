@@ -2,8 +2,8 @@
 
 Terraform module which is an example.
 
-
 ## Usage
+
 ```hcl
 module "example" {
   source            = "github.com/sncs-uk/terraform-vmware-vm"
@@ -37,6 +37,7 @@ module "example" {
 ```
 
 ## Requirements
+
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
