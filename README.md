@@ -6,9 +6,25 @@ Terraform module which is an example.
 ## Usage
 ```hcl
 module "example" {
-  source        = "github.com/sncs-uk/terraform-vmware-vm"
-  parameter     = "value"
-  do_something  = true
+  source            = "github.com/sncs-uk/terraform-vmware-vm"
+  hostname          = "vm-example"
+  template_name     = "my-super-template"
+  network_name      = "VM Network"
+  ipv4_addresses    = "10.20.30.40/24"
+  ipv4_gateway      = "10.20.30.1"
+  ipv6_addresses    = "2001:0db8::2/64"
+  ipv6_gateway      = "2001:0db8::1"
+  nameservers       = ["1.1.1.1", "8.8.8.8"]
+  username          = "debian"
+  ssh_keys          = ["ssh-rsa Azusjdif..."]
+  vCPUs             = 2
+  memory            = 2048
+  datacenter_name   = "DC"
+  cluster_name      = "Cluster"
+  datastore_name    = "vSanDatastore"
+  vm_folder         = "My folder"
+  disk_size         = 10
+  thin_provision    = true
 }
 ```
 
@@ -16,10 +32,9 @@ module "example" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_example"></a> [example](#requirement\_example) | >= 1.23 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_example"></a> [example](#provider\_example) | >= 1.23 |
+| <a name="provider_vsphere"></a> [vsphere](#provider\_vsphere) | >= 2.4.1 |
