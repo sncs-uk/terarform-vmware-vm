@@ -2,6 +2,8 @@
 
 This module creates a VM from a template, using cloud-init to customise the settings. It abstracts all the data objects away so there is just one resource to configure.
 
+Disk sizes are in GB
+
 ## Usage
 
 ```hcl
