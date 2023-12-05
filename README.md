@@ -12,9 +12,9 @@ module "example" {
   hostname          = "vm-example"
   template_name     = "my-super-template"
   network_name      = "VM Network"
-  ipv4_addresses    = "10.20.30.40/24"
+  ipv4_addresses    = ["10.20.30.40/24"]
   ipv4_gateway      = "10.20.30.1"
-  ipv6_addresses    = "2001:0db8::2/64"
+  ipv6_addresses    = ["2001:0db8::2/64"]
   ipv6_gateway      = "2001:0db8::1"
   nameservers       = ["1.1.1.1", "8.8.8.8"]
   username          = "debian"
