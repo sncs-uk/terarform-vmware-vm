@@ -104,3 +104,9 @@ variable additional_disks {
   description = "List of additional disks to add to the VM."
   default     = []
 }
+
+variable ethernet_adapter {
+  type        = string
+  description = "Ehternet adapater to which to apply network configuration"
+  default     = "ens192"
+}

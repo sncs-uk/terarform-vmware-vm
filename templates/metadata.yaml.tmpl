@@ -1,2 +1,32 @@
 instance-id: ${hostname}
 local-hostname: ${hostname}
+
+network:
+  version: 2
+  ethernets:
+    ${nic_name}
+      %{~ if(dhcp4 == true) ~}
+      dhcp4: true
+      %{~ endif ~}
+      %{~ if(dhcp6 == true) ~}
+      dhcp6: true
+      %{~ endif ~}
+      %{~ if(length(addresses) > 0) ~}
+      addresses:
+        %{~ for address in addresses ~}
+        - ${ address }
+        %{~ endfor ~}
+      %{~ if (gateway4 != null) ~}
+      gateway4: ${ gateway4 }
+      %{~ endif ~}
+      %{~ if (gateway6 != null) ~}
+      gateway6: ${ gateway6 }
+      %{~ endif ~}
+      %{~ if length(nameservers) > 0 ~}
+      nameservers:
+        addresses:
+          %{~ for address in nameservers ~}
+          - ${ address }
+          %{~ endfor ~}
+      %{~ endif ~}
+      %{~ endif ~}
