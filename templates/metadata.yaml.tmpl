@@ -4,7 +4,7 @@ local-hostname: ${hostname}
 network:
   version: 2
   ethernets:
-    ${nic_name}
+    ${nic_name}:
       %{~ if(dhcp4 == true) ~}
       dhcp4: true
       %{~ endif ~}
