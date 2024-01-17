@@ -67,7 +67,13 @@ resource "vsphere_virtual_machine" "vm" {
           "${path.module}/templates/userdata.yaml.tmpl",
           {
             username = var.username,
-            ssh_keys = var.ssh_keys
+            ssh_keys = var.ssh_keys,
+            dhcp4       = length(var.ipv4_addresses) == 0,
+            dhcp6       = length(var.ipv6_addresses) == 0,
+            addresses   = concat(var.ipv4_addresses, var.ipv6_addresses)
+            gateway4    = var.ipv4_gateway
+            gateway6    = var.ipv6_gateway
+            nameservers = var.nameservers
           }
         )
       )
@@ -76,13 +82,7 @@ resource "vsphere_virtual_machine" "vm" {
         templatefile(
           "${path.module}/templates/metadata.yaml.tmpl",
           {
-            hostname    = var.hostname,
-            dhcp4       = length(var.ipv4_addresses) == 0,
-            dhcp6       = length(var.ipv6_addresses) == 0,
-            addresses   = concat(var.ipv4_addresses, var.ipv6_addresses)
-            gateway4    = var.ipv4_gateway
-            gateway6    = var.ipv6_gateway
-            nameservers = var.nameservers
+            hostname    = var.hostname
           }
         )
       )
