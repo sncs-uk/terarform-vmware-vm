@@ -1,12 +1,44 @@
 #cloud-config
 users:
   - name: ${ username }
-  %{ if length(ssh_keys) > 0 }
-    ssh-authorized-keys:
-    %{ for key in ssh_keys ~}
+%{ if length(ssh_keys) > 0 }
+    ssh_authorized_keys:
+%{ for key in ssh_keys ~}
     - ${key}
-    %{ endfor }
-  %{ endif }
+%{ endfor }
+%{ endif }
     sudo: ALL=(ALL) NOPASSWD:ALL
     groups: sudo
     shell: /bin/bash
+
+network:
+  version: 2
+  ethernets:
+    nics:
+      match:
+        name: ens192
+%{ if(dhcp4 == true) }
+      dhcp4: true
+%{ endif }
+%{ if(dhcp6 == true) }
+      dhcp6: true
+%{ endif }
+%{ if(length(addresses) > 0) }
+      addresses:
+%{ for address in addresses }
+        - ${ address }
+%{ endfor }
+%{ if (gateway4 != null) }
+      gateway4: ${ gateway4 }
+%{ endif }
+%{ if (gateway6 != null) }
+      gateway6: ${ gateway6 }
+%{ endif }
+%{ if length(nameservers) > 0 }
+      nameservers:
+        addresses:
+%{ for address in nameservers }
+          - ${ address }
+%{ endfor }
+%{ endif }
+%{ endif }
