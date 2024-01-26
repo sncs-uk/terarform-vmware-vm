@@ -110,3 +110,9 @@ variable ethernet_adapter {
   description = "Ehternet adapater to which to apply network configuration"
   default     = "ens192"
 }
+
+variable custom_userdata {
+  type        = string
+  description = "Any custom data to include in the userdata.yml cloudinit manifest"
+  default     = ""
+}

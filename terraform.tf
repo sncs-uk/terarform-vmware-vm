@@ -66,8 +66,9 @@ resource "vsphere_virtual_machine" "vm" {
         templatefile(
           "${path.module}/templates/userdata.yaml.tmpl",
           {
-            username = var.username,
-            ssh_keys = var.ssh_keys
+            username        = var.username,
+            ssh_keys        = var.ssh_keys,
+            custom_userdata = var.custom_userdata
           }
         )
       )
